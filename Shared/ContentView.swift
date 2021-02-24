@@ -92,7 +92,7 @@ class AppState: ObservableObject {
     
     items[command] = item
     
-    DispatchQueue.main.async {
+    DispatchQueue.main.sync {
       let all = self.items.values.sorted(by: { $0.totalOutBytes > $1.totalOutBytes})
       self.sortedItems = all.prefix(50).map{ $0 }
     }
@@ -158,6 +158,17 @@ class AppState: ObservableObject {
 struct ContentView: View {
   @StateObject var state = AppState()
   
+
+
+  var formatter: ByteCountFormatter {
+    let formatter = ByteCountFormatter()
+    formatter.allowedUnits = .useAll
+    formatter.countStyle = .file
+    formatter.includesUnit = true
+    formatter.isAdaptive = true
+    return formatter
+  }
+  
   var body: some View {
     List {
       HStack(alignment: .center, spacing: 10) {
@@ -191,11 +202,11 @@ struct ContentView: View {
             .frame(width: 200, alignment: .leading)
           Divider()
 
-          Text(item.totalInBytes.description)
+          Text(formatter.string(fromByteCount: Int64(item.totalInBytes)))
             .frame(width: 80, alignment: .trailing)
           Divider()
 
-          Text(item.totalOutBytes.description)
+          Text(formatter.string(fromByteCount: Int64(item.totalOutBytes)))
             .frame(width: 80, alignment: .trailing)
           Divider()
 
