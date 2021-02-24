@@ -1,6 +1,6 @@
 #  Swapman
 
-![screenshot](./screenshot.png)
+![screenshot](./Screenshot.png)
 
 ## USAGE
 
