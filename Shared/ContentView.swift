@@ -199,7 +199,7 @@ struct ContentView: View {
       }
       .font(.footnote)
       .foregroundColor(.secondary)
-
+      
       ForEach(state.sortedItems) { item in
         HStack(alignment: .center, spacing: 10) {
           Text(item.compactCommand)
@@ -229,7 +229,7 @@ struct ContentView: View {
     }
     .toolbar {
       if state.state == .stopped {
-        Button(action: state.runFsUsage) {
+        Button(action: state.runFsUsage) {          
           Label("Start", systemImage: "play.circle")
         }
       } else {
