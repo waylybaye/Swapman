@@ -53,14 +53,22 @@ class AppState: ObservableObject {
       return
     }
     
-    guard let cmd = columns.last?.components(separatedBy: "."), cmd.count >= 2, let pid = Int(cmd.last!) else {
+    guard let wIndex = columns.firstIndex(of: "W") else {
+      print("warning: can't find W column: ", line)
+      return
+    }
+    
+    let process = columns[columns.index(after: wIndex)...].joined(separator: " ")
+    let cmd = process.components(separatedBy: ".")
+    
+    guard cmd.count >= 2, let pid = Int(cmd.last!) else {
       return
     }
     
     let command: String = cmd.prefix(cmd.count - 1).joined(separator: ".")
     var bytes: UInt64 = 0
     var isIn = true
-    
+        
     for column in columns {
       if column.hasPrefix("PgIn") {
         isIn = true
