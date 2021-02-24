@@ -7,6 +7,7 @@
 
 import CoreData
 import SwiftUI
+import Combine
 
 struct UsageItem: Identifiable {
   var id: String {
@@ -38,6 +39,8 @@ class AppState: ObservableObject {
   @Published var sortedItems: [UsageItem] = []
   @Published var state: DaemonState = .stopped
   @Published var lastError: StringError? = nil
+  
+  var lastRefreshAt = Date()
   
   func process(line: String) {
     let columns = line.components(separatedBy: .whitespaces).filter { !$0.isEmpty }
@@ -92,9 +95,13 @@ class AppState: ObservableObject {
     
     items[command] = item
     
-    DispatchQueue.main.sync {
-      let all = self.items.values.sorted(by: { $0.totalOutBytes > $1.totalOutBytes})
-      self.sortedItems = all.prefix(50).map{ $0 }
+    if Date().timeIntervalSince(lastRefreshAt) > 0.5 {
+      DispatchQueue.main.sync {
+        let all = self.items.values.sorted(by: { $0.totalOutBytes > $1.totalOutBytes })
+//      self.sortedItems = all.prefix(50).map{ $0 }
+        self.sortedItems = all
+        self.lastRefreshAt = Date()
+      }
     }
   }
   
@@ -158,8 +165,6 @@ class AppState: ObservableObject {
 struct ContentView: View {
   @StateObject var state = AppState()
   
-
-
   var formatter: ByteCountFormatter {
     let formatter = ByteCountFormatter()
     formatter.allowedUnits = .useAll
