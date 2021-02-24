@@ -54,11 +54,11 @@ class AppState: ObservableObject {
     }
     
 //    print(line)
-    guard let cmd = columns.last?.components(separatedBy: "."), cmd.count == 2, let pid = Int(cmd[1]) else {
+    guard let cmd = columns.last?.components(separatedBy: "."), cmd.count >= 2, let pid = Int(cmd.last!) else {
       return
     }
     
-    let command: String = cmd[0]
+    let command: String = cmd.prefix(cmd.count - 1).joined(separator: ".")
     var bytes: UInt64 = 0
     var isIn = true
     
@@ -190,12 +190,12 @@ struct ContentView: View {
           .frame(width: 80, alignment: .trailing)
         Divider()
 
-        Text("In Count")
+        Text("In Page")
           .frame(width: 60, alignment: .trailing)
 
         Divider()
 
-        Text("Out Count")
+        Text("Out Page")
           .frame(width: 60, alignment: .trailing)
       }
       .font(.footnote)
