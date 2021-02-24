@@ -53,7 +53,6 @@ class AppState: ObservableObject {
       return
     }
     
-//    print(line)
     guard let cmd = columns.last?.components(separatedBy: "."), cmd.count >= 2, let pid = Int(cmd.last!) else {
       return
     }
