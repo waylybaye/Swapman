@@ -30,6 +30,7 @@
 		B425125E25E63D8A00281D84 /* Swapman.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Swapman.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B425126025E63D8A00281D84 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B425126125E63D8A00281D84 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
+		B425127625E6641000281D84 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +54,7 @@
 		B425124625E63D8900281D84 = {
 			isa = PBXGroup;
 			children = (
+				B425127625E6641000281D84 /* README.md */,
 				B425124B25E63D8900281D84 /* Shared */,
 				B425125825E63D8A00281D84 /* iOS */,
 				B425125F25E63D8A00281D84 /* macOS */,
