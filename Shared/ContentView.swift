@@ -5,76 +5,107 @@
 //  Created by Baye Wayly on 2021/2/24.
 //
 
-import SwiftUI
 import CoreData
+import SwiftUI
+
+struct UsageItem: Identifiable {
+  var id: String {
+    compactCommand
+  }
+
+  var totalInBytes: UInt64
+  var totalOutBytes: UInt64
+  var inCount: UInt64
+  var outCount: UInt64
+  var compactCommand: String
+  var pid: Int
+}
 
 struct ContentView: View {
-    @Environment(\.managedObjectContext) private var viewContext
+  enum DaemonState {
+    case stopped, running
+  }
 
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
-        animation: .default)
-    private var items: FetchedResults<Item>
+  @State private var state: DaemonState = .stopped
+  @State private var items: [UsageItem] = [
+    UsageItem(totalInBytes: 1024*1024*4, totalOutBytes: 1024*1024*33, inCount: 1000, outCount: 2000, compactCommand: "kernel_task", pid: 1)
+  ]
 
-    var body: some View {
-        List {
-            ForEach(items) { item in
-                Text("Item at \(item.timestamp!, formatter: itemFormatter)")
-            }
-            .onDelete(perform: deleteItems)
+  var body: some View {
+    List {
+      HStack(alignment: .center, spacing: 10) {
+        Text("Process")
+          .frame(width: 120, alignment: .leading)
+
+        Divider()
+
+        Text("Swap In")
+          .frame(width: 60, alignment: .leading)
+        Divider()
+
+        Text("Swap Out")
+          .frame(width: 60, alignment: .leading)
+        Divider()
+
+        Text("In Count")
+          .frame(width: 60, alignment: .leading)
+
+        Divider()
+
+        Text("Out Count")
+          .frame(width: 60, alignment: .leading)
+      }
+      .font(.footnote)
+      .foregroundColor(.secondary)
+
+      ForEach(items) { item in
+        HStack(alignment: .center, spacing: 10) {
+          Text(item.compactCommand)
+            .frame(width: 120, alignment: .leading)
+          Divider()
+
+          Text(item.totalInBytes.description)
+            .frame(width: 60, alignment: .leading)
+          Divider()
+
+          Text(item.totalOutBytes.description)
+            .frame(width: 60, alignment: .leading)
+          Divider()
+
+          Text(item.inCount.description)
+            .frame(width: 60, alignment: .leading)
+          Divider()
+
+          Text(item.outCount.description)
+            .frame(width: 60, alignment: .leading)
         }
-        .toolbar {
-            #if os(iOS)
-            EditButton()
-            #endif
-
-            Button(action: addItem) {
-                Label("Add Item", systemImage: "plus")
-            }
-        }
+      }
+      .font(.system(.subheadline, design: .monospaced))
     }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
-
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
+    .toolbar {
+      if state == .stopped {
+        Button(action: {}) {
+          Label("Start", systemImage: "play.circle")
         }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            offsets.map { items[$0] }.forEach(viewContext.delete)
-
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
+      } else {
+        Button(action: {}) {
+          Label("Stop", systemImage: "stop.circle")
+            .foregroundColor(.accentColor)
         }
+      }
     }
+  }
 }
 
 private let itemFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateStyle = .short
-    formatter.timeStyle = .medium
-    return formatter
+  let formatter = DateFormatter()
+  formatter.dateStyle = .short
+  formatter.timeStyle = .medium
+  return formatter
 }()
 
 struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-    }
+  static var previews: some View {
+    ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+  }
 }
