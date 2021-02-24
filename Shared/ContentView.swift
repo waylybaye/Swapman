@@ -13,10 +13,10 @@ struct UsageItem: Identifiable {
     compactCommand
   }
 
-  var totalInBytes: UInt64
-  var totalOutBytes: UInt64
-  var inCount: UInt64
-  var outCount: UInt64
+  var totalInBytes: UInt64 = 0
+  var totalOutBytes: UInt64 = 0
+  var inCount: UInt64 = 0
+  var outCount: UInt64 = 0
   var compactCommand: String
   var pid: Int
 }
@@ -35,7 +35,7 @@ class AppState: ObservableObject {
   
   var items = [String: UsageItem]()
   
-  @Published var items: [UsageItem] = []
+  @Published var sortedItems: [UsageItem] = []
   @Published var state: DaemonState = .stopped
   @Published var lastError: StringError? = nil
   
@@ -50,12 +50,12 @@ class AppState: ObservableObject {
       return
     }
     
-    print(line)
+//    print(line)
     guard let cmd = columns.last?.components(separatedBy: "."), cmd.count == 2, let pid = Int(cmd[1]) else {
       return
     }
     
-    var command: String = cmd[0]
+    let command: String = cmd[0]
     var bytes: UInt64 = 0
     var isIn = true
     
@@ -73,8 +73,29 @@ class AppState: ObservableObject {
       }
     }
     
-
+    var item: UsageItem
     
+    if items[command] == nil {
+      item = UsageItem(compactCommand: command, pid: pid)
+
+    } else {
+      item = items[command]!
+    }
+    
+    if isIn {
+      item.totalInBytes += bytes
+      item.inCount += 1
+    } else {
+      item.totalOutBytes += bytes
+      item.outCount += 1
+    }
+    
+    items[command] = item
+    
+    DispatchQueue.main.async {
+      let all = self.items.values.sorted(by: { $0.totalOutBytes > $1.totalOutBytes})
+      self.sortedItems = all.prefix(50).map{ $0 }
+    }
   }
   
   func runFsUsage() {
@@ -109,16 +130,6 @@ class AppState: ObservableObject {
           lineBuffer += String(output[indice])
         }
       }
-//      let lines = output.components(separatedBy: .newlines)
-      
-//      guard let range = output.rangeOfCharacter(from: .newlines) else {
-//        lineBuffer += output
-//        return
-//      }
-//
-//      let line = lineBuffer + output[..<range.lowerBound]
-//      self.process(line: line)
-//      lineBuffer = String(output[range.upperBound..<output.endIndex])
     }
     
     task.terminationHandler = { process in
@@ -151,49 +162,49 @@ struct ContentView: View {
     List {
       HStack(alignment: .center, spacing: 10) {
         Text("Process")
-          .frame(width: 120, alignment: .leading)
+          .frame(width: 200, alignment: .leading)
 
         Divider()
 
         Text("Swap In")
-          .frame(width: 60, alignment: .leading)
+          .frame(width: 80, alignment: .trailing)
         Divider()
 
         Text("Swap Out")
-          .frame(width: 60, alignment: .leading)
+          .frame(width: 80, alignment: .trailing)
         Divider()
 
         Text("In Count")
-          .frame(width: 60, alignment: .leading)
+          .frame(width: 60, alignment: .trailing)
 
         Divider()
 
         Text("Out Count")
-          .frame(width: 60, alignment: .leading)
+          .frame(width: 60, alignment: .trailing)
       }
       .font(.footnote)
       .foregroundColor(.secondary)
 
-      ForEach(state.items) { item in
+      ForEach(state.sortedItems) { item in
         HStack(alignment: .center, spacing: 10) {
           Text(item.compactCommand)
-            .frame(width: 120, alignment: .leading)
+            .frame(width: 200, alignment: .leading)
           Divider()
 
           Text(item.totalInBytes.description)
-            .frame(width: 60, alignment: .leading)
+            .frame(width: 80, alignment: .trailing)
           Divider()
 
           Text(item.totalOutBytes.description)
-            .frame(width: 60, alignment: .leading)
+            .frame(width: 80, alignment: .trailing)
           Divider()
 
           Text(item.inCount.description)
-            .frame(width: 60, alignment: .leading)
+            .frame(width: 60, alignment: .trailing)
           Divider()
 
           Text(item.outCount.description)
-            .frame(width: 60, alignment: .leading)
+            .frame(width: 60, alignment: .trailing)
         }
       }
       .font(.system(.subheadline, design: .monospaced))
