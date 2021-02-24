@@ -97,7 +97,7 @@ class AppState: ObservableObject {
     
     if Date().timeIntervalSince(lastRefreshAt) > 0.5 {
       DispatchQueue.main.sync {
-        let all = self.items.values.sorted(by: { $0.totalOutBytes > $1.totalOutBytes })
+        let all = self.items.values.sorted(by: { $0.totalInBytes > $1.totalInBytes })
 //      self.sortedItems = all.prefix(50).map{ $0 }
         self.sortedItems = all
         self.lastRefreshAt = Date()
