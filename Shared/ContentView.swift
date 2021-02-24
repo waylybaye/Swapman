@@ -21,16 +21,132 @@ struct UsageItem: Identifiable {
   var pid: Int
 }
 
-struct ContentView: View {
+typealias StringError = String
+extension StringError: Identifiable {
+  public var id: Self { self }
+}
+
+class AppState: ObservableObject {
+  var task: Process? = nil
+  
   enum DaemonState {
     case stopped, running
   }
+  
+  var items = [String: UsageItem]()
+  
+  @Published var items: [UsageItem] = []
+  @Published var state: DaemonState = .stopped
+  @Published var lastError: StringError? = nil
+  
+  func process(line: String) {
+    let columns = line.components(separatedBy: .whitespaces).filter { !$0.isEmpty }
+    
+    guard columns.count > 2, columns[1].hasPrefix("PgIn") || columns[1].hasPrefix("PgOut") else {
+      return
+    }
+    
+    if line.range(of: "/VM/swapfile") == nil {
+      return
+    }
+    
+    print(line)
+    guard let cmd = columns.last?.components(separatedBy: "."), cmd.count == 2, let pid = Int(cmd[1]) else {
+      return
+    }
+    
+    var command: String = cmd[0]
+    var bytes: UInt64 = 0
+    var isIn = true
+    
+    for column in columns {
+      if column.hasPrefix("PgIn") {
+        isIn = true
+      } else if column.hasPrefix("PgOut") {
+        isIn = false
+      }
+      
+      if column.hasPrefix("B=") {
+        let bytesHex = column[column.index(column.startIndex, offsetBy: 2)...]
+        let scanner = Scanner(string: String(bytesHex))
+        scanner.scanHexInt64(&bytes)
+      }
+    }
+    
 
-  @State private var state: DaemonState = .stopped
-  @State private var items: [UsageItem] = [
-    UsageItem(totalInBytes: 1024*1024*4, totalOutBytes: 1024*1024*33, inCount: 1000, outCount: 2000, compactCommand: "kernel_task", pid: 1)
-  ]
+    
+  }
+  
+  func runFsUsage() {
+    let task = Process()
+    let pipe = Pipe()
+    let stderr = Pipe()
+    task.standardOutput = pipe
+    task.standardError = stderr
+    task.arguments = ["-w", "-f", "filesys,diskio"]
+    task.launchPath = "/usr/bin/fs_usage"
+    task.launch()
 
+    self.state = .running
+    
+    var lineBuffer = ""
+    
+    pipe.fileHandleForReading.readabilityHandler = { fileHandler in
+      guard let task = self.task, task.isRunning else {
+        return
+      }
+      
+      let data = fileHandler.availableData
+      guard data.count > 0, let output = String(data: data, encoding: .utf8) else {
+        return
+      }
+      
+      for indice in output.indices {
+        if output[indice] == "\n" {
+          self.process(line: lineBuffer)
+          lineBuffer = ""
+        } else {
+          lineBuffer += String(output[indice])
+        }
+      }
+//      let lines = output.components(separatedBy: .newlines)
+      
+//      guard let range = output.rangeOfCharacter(from: .newlines) else {
+//        lineBuffer += output
+//        return
+//      }
+//
+//      let line = lineBuffer + output[..<range.lowerBound]
+//      self.process(line: line)
+//      lineBuffer = String(output[range.upperBound..<output.endIndex])
+    }
+    
+    task.terminationHandler = { process in
+      if let stderr = process.standardError as? Pipe {
+        let data = stderr.fileHandleForReading.readDataToEndOfFile()
+        DispatchQueue.main.async {
+          self.state = .stopped
+          
+          if data.count > 0 {
+            self.lastError = String(data: data, encoding: .utf8)
+          }
+        }
+      }
+    }
+    self.task = task
+  }
+  
+  func stop() {
+    if let task = task, task.isRunning {
+      task.terminate()
+    }
+  }
+}
+
+
+struct ContentView: View {
+  @StateObject var state = AppState()
+  
   var body: some View {
     List {
       HStack(alignment: .center, spacing: 10) {
@@ -58,7 +174,7 @@ struct ContentView: View {
       .font(.footnote)
       .foregroundColor(.secondary)
 
-      ForEach(items) { item in
+      ForEach(state.items) { item in
         HStack(alignment: .center, spacing: 10) {
           Text(item.compactCommand)
             .frame(width: 120, alignment: .leading)
@@ -82,13 +198,16 @@ struct ContentView: View {
       }
       .font(.system(.subheadline, design: .monospaced))
     }
+    .alert(item: $state.lastError) { error in
+      Alert(title: Text(verbatim: error))
+    }
     .toolbar {
-      if state == .stopped {
-        Button(action: {}) {
+      if state.state == .stopped {
+        Button(action: state.runFsUsage) {
           Label("Start", systemImage: "play.circle")
         }
       } else {
-        Button(action: {}) {
+        Button(action: state.stop) {
           Label("Stop", systemImage: "stop.circle")
             .foregroundColor(.accentColor)
         }
