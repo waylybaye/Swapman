@@ -7,15 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B425126225E63D8A00281D84 /* Swapman.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B425124C25E63D8900281D84 /* Swapman.xcdatamodeld */; };
 		B425126325E63D8A00281D84 /* Swapman.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B425124C25E63D8900281D84 /* Swapman.xcdatamodeld */; };
-		B425126425E63D8A00281D84 /* SwapmanApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B425124E25E63D8900281D84 /* SwapmanApp.swift */; };
 		B425126525E63D8A00281D84 /* SwapmanApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B425124E25E63D8900281D84 /* SwapmanApp.swift */; };
-		B425126625E63D8A00281D84 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B425124F25E63D8900281D84 /* ContentView.swift */; };
 		B425126725E63D8A00281D84 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B425124F25E63D8900281D84 /* ContentView.swift */; };
-		B425126825E63D8A00281D84 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = B425125025E63D8900281D84 /* Persistence.swift */; };
 		B425126925E63D8A00281D84 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = B425125025E63D8900281D84 /* Persistence.swift */; };
-		B425126A25E63D8A00281D84 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B425125125E63D8A00281D84 /* Assets.xcassets */; };
 		B425126B25E63D8A00281D84 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B425125125E63D8A00281D84 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -25,8 +20,6 @@
 		B425124F25E63D8900281D84 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B425125025E63D8900281D84 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		B425125125E63D8A00281D84 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		B425125625E63D8A00281D84 /* Swapman.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Swapman.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		B425125925E63D8A00281D84 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B425125E25E63D8A00281D84 /* Swapman.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Swapman.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B425126025E63D8A00281D84 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B425126125E63D8A00281D84 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
@@ -35,13 +28,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		B425125325E63D8A00281D84 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		B425125B25E63D8A00281D84 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -58,7 +44,6 @@
 				B425127625E6641000281D84 /* README.md */,
 				B425127B25E6664F00281D84 /* Screenshot.png */,
 				B425124B25E63D8900281D84 /* Shared */,
-				B425125825E63D8A00281D84 /* iOS */,
 				B425125F25E63D8A00281D84 /* macOS */,
 				B425125725E63D8A00281D84 /* Products */,
 			);
@@ -79,18 +64,9 @@
 		B425125725E63D8A00281D84 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B425125625E63D8A00281D84 /* Swapman.app */,
 				B425125E25E63D8A00281D84 /* Swapman.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		B425125825E63D8A00281D84 /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				B425125925E63D8A00281D84 /* Info.plist */,
-			);
-			path = iOS;
 			sourceTree = "<group>";
 		};
 		B425125F25E63D8A00281D84 /* macOS */ = {
@@ -105,23 +81,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		B425125525E63D8A00281D84 /* Swapman (iOS) */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = B425126E25E63D8A00281D84 /* Build configuration list for PBXNativeTarget "Swapman (iOS)" */;
-			buildPhases = (
-				B425125225E63D8A00281D84 /* Sources */,
-				B425125325E63D8A00281D84 /* Frameworks */,
-				B425125425E63D8A00281D84 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Swapman (iOS)";
-			productName = "Swapman (iOS)";
-			productReference = B425125625E63D8A00281D84 /* Swapman.app */;
-			productType = "com.apple.product-type.application";
-		};
 		B425125D25E63D8A00281D84 /* Swapman (macOS) */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B425127125E63D8A00281D84 /* Build configuration list for PBXNativeTarget "Swapman (macOS)" */;
@@ -148,9 +107,6 @@
 				LastSwiftUpdateCheck = 1240;
 				LastUpgradeCheck = 1240;
 				TargetAttributes = {
-					B425125525E63D8A00281D84 = {
-						CreatedOnToolsVersion = 12.4;
-					};
 					B425125D25E63D8A00281D84 = {
 						CreatedOnToolsVersion = 12.4;
 					};
@@ -169,21 +125,12 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				B425125525E63D8A00281D84 /* Swapman (iOS) */,
 				B425125D25E63D8A00281D84 /* Swapman (macOS) */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		B425125425E63D8A00281D84 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B425126A25E63D8A00281D84 /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		B425125C25E63D8A00281D84 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -195,17 +142,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		B425125225E63D8A00281D84 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B425126225E63D8A00281D84 /* Swapman.xcdatamodeld in Sources */,
-				B425126825E63D8A00281D84 /* Persistence.swift in Sources */,
-				B425126425E63D8A00281D84 /* SwapmanApp.swift in Sources */,
-				B425126625E63D8A00281D84 /* ContentView.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		B425125A25E63D8A00281D84 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -331,51 +267,6 @@
 			};
 			name = Release;
 		};
-		B425126F25E63D8A00281D84 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 67Q6744L7B;
-				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = iOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = tech.baye.Swapman;
-				PRODUCT_NAME = Swapman;
-				SDKROOT = iphoneos;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		B425127025E63D8A00281D84 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 67Q6744L7B;
-				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = iOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = tech.baye.Swapman;
-				PRODUCT_NAME = Swapman;
-				SDKROOT = iphoneos;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
 		B425127225E63D8A00281D84 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -434,15 +325,6 @@
 			buildConfigurations = (
 				B425126C25E63D8A00281D84 /* Debug */,
 				B425126D25E63D8A00281D84 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		B425126E25E63D8A00281D84 /* Build configuration list for PBXNativeTarget "Swapman (iOS)" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				B425126F25E63D8A00281D84 /* Debug */,
-				B425127025E63D8A00281D84 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
