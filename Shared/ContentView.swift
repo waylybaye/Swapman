@@ -97,7 +97,7 @@ class AppState: ObservableObject {
     
     if Date().timeIntervalSince(lastRefreshAt) > 0.5 {
       DispatchQueue.main.sync {
-        let all = self.items.values.sorted(by: { $0.totalInBytes > $1.totalInBytes })
+        let all = self.items.values.sorted(by: { $0.totalOutBytes > 0 || $1.totalOutBytes > 0 ? $0.totalOutBytes >= $1.totalOutBytes : $0.totalInBytes > $1.totalInBytes })
 //      self.sortedItems = all.prefix(50).map{ $0 }
         self.sortedItems = all
         self.lastRefreshAt = Date()
@@ -207,11 +207,11 @@ struct ContentView: View {
             .frame(width: 200, alignment: .leading)
           Divider()
 
-          Text(formatter.string(fromByteCount: Int64(item.totalInBytes)))
+          Text(item.totalInBytes > 0 ? formatter.string(fromByteCount: Int64(item.totalInBytes)) : "")
             .frame(width: 80, alignment: .trailing)
           Divider()
 
-          Text(formatter.string(fromByteCount: Int64(item.totalOutBytes)))
+          Text(item.totalOutBytes > 0 ? formatter.string(fromByteCount: Int64(item.totalOutBytes)) : "")
             .frame(width: 80, alignment: .trailing)
           Divider()
 
