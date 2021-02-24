@@ -5,9 +5,9 @@
 //  Created by Baye Wayly on 2021/2/24.
 //
 
+import Combine
 import CoreData
 import SwiftUI
-import Combine
 
 struct UsageItem: Identifiable {
   var id: String {
@@ -28,7 +28,7 @@ extension StringError: Identifiable {
 }
 
 class AppState: ObservableObject {
-  var task: Process? = nil
+  var task: Process?
   
   enum DaemonState {
     case stopped, running
@@ -168,7 +168,6 @@ class AppState: ObservableObject {
   }
 }
 
-
 struct ContentView: View {
   @StateObject var state = AppState()
   
@@ -181,63 +180,67 @@ struct ContentView: View {
     return formatter
   }
   
+  var header: some View {
+    HStack(alignment: .center, spacing: 10) {
+      Text("Process")
+        .frame(width: 200, alignment: .leading)
+
+      Divider()
+
+      Text("Swap In")
+        .frame(width: 80, alignment: .trailing)
+      Divider()
+
+      Text("Swap Out")
+        .frame(width: 80, alignment: .trailing)
+      Divider()
+
+      Text("In Page")
+        .frame(width: 60, alignment: .trailing)
+
+      Divider()
+
+      Text("Out Page")
+        .frame(width: 60, alignment: .trailing)
+    }
+    .font(.footnote)
+    .foregroundColor(.secondary)
+  }
+  
   var body: some View {
     List {
-      HStack(alignment: .center, spacing: 10) {
-        Text("Process")
-          .frame(width: 200, alignment: .leading)
+      Section(header: header) {
+        ForEach(state.sortedItems) { item in
+          HStack(alignment: .center, spacing: 10) {
+            Text(item.compactCommand)
+              .frame(width: 200, alignment: .leading)
+            Divider()
 
-        Divider()
+            Text(item.totalInBytes > 0 ? formatter.string(fromByteCount: Int64(item.totalInBytes)) : "")
+              .frame(width: 80, alignment: .trailing)
+            Divider()
 
-        Text("Swap In")
-          .frame(width: 80, alignment: .trailing)
-        Divider()
+            Text(item.totalOutBytes > 0 ? formatter.string(fromByteCount: Int64(item.totalOutBytes)) : "")
+              .frame(width: 80, alignment: .trailing)
+            Divider()
 
-        Text("Swap Out")
-          .frame(width: 80, alignment: .trailing)
-        Divider()
+            Text(item.inCount.description)
+              .frame(width: 60, alignment: .trailing)
+            Divider()
 
-        Text("In Page")
-          .frame(width: 60, alignment: .trailing)
-
-        Divider()
-
-        Text("Out Page")
-          .frame(width: 60, alignment: .trailing)
-      }
-      .font(.footnote)
-      .foregroundColor(.secondary)
-      
-      ForEach(state.sortedItems) { item in
-        HStack(alignment: .center, spacing: 10) {
-          Text(item.compactCommand)
-            .frame(width: 200, alignment: .leading)
-          Divider()
-
-          Text(item.totalInBytes > 0 ? formatter.string(fromByteCount: Int64(item.totalInBytes)) : "")
-            .frame(width: 80, alignment: .trailing)
-          Divider()
-
-          Text(item.totalOutBytes > 0 ? formatter.string(fromByteCount: Int64(item.totalOutBytes)) : "")
-            .frame(width: 80, alignment: .trailing)
-          Divider()
-
-          Text(item.inCount.description)
-            .frame(width: 60, alignment: .trailing)
-          Divider()
-
-          Text(item.outCount.description)
-            .frame(width: 60, alignment: .trailing)
+            Text(item.outCount.description)
+              .frame(width: 60, alignment: .trailing)
+          }
         }
+        .font(.system(.subheadline, design: .monospaced))
       }
-      .font(.system(.subheadline, design: .monospaced))
     }
     .alert(item: $state.lastError) { error in
       Alert(title: Text(verbatim: error))
     }
     .toolbar {
       if state.state == .stopped {
-        Button(action: state.runFsUsage) {          
+        Button(action: state.runFsUsage) {
           Label("Start", systemImage: "play.circle")
         }
       } else {
