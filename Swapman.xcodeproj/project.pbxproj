@@ -7,18 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B425126325E63D8A00281D84 /* Swapman.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B425124C25E63D8900281D84 /* Swapman.xcdatamodeld */; };
 		B425126525E63D8A00281D84 /* SwapmanApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B425124E25E63D8900281D84 /* SwapmanApp.swift */; };
 		B425126725E63D8A00281D84 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B425124F25E63D8900281D84 /* ContentView.swift */; };
-		B425126925E63D8A00281D84 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = B425125025E63D8900281D84 /* Persistence.swift */; };
 		B425126B25E63D8A00281D84 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B425125125E63D8A00281D84 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		B425124D25E63D8900281D84 /* Shared.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Shared.xcdatamodel; sourceTree = "<group>"; };
 		B425124E25E63D8900281D84 /* SwapmanApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapmanApp.swift; sourceTree = "<group>"; };
 		B425124F25E63D8900281D84 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		B425125025E63D8900281D84 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		B425125125E63D8A00281D84 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B425125E25E63D8A00281D84 /* Swapman.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Swapman.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B425126025E63D8A00281D84 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -56,9 +52,7 @@
 			children = (
 				B425124E25E63D8900281D84 /* SwapmanApp.swift */,
 				B425124F25E63D8900281D84 /* ContentView.swift */,
-				B425125025E63D8900281D84 /* Persistence.swift */,
 				B425125125E63D8A00281D84 /* Assets.xcassets */,
-				B425124C25E63D8900281D84 /* Swapman.xcdatamodeld */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -148,8 +142,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B425126325E63D8A00281D84 /* Swapman.xcdatamodeld in Sources */,
-				B425126925E63D8A00281D84 /* Persistence.swift in Sources */,
 				B425126525E63D8A00281D84 /* SwapmanApp.swift in Sources */,
 				B425126725E63D8A00281D84 /* ContentView.swift in Sources */,
 			);
@@ -343,19 +335,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		B425124C25E63D8900281D84 /* Swapman.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				B425124D25E63D8900281D84 /* Shared.xcdatamodel */,
-			);
-			currentVersion = B425124D25E63D8900281D84 /* Shared.xcdatamodel */;
-			path = Swapman.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = B425124725E63D8900281D84 /* Project object */;
 }
